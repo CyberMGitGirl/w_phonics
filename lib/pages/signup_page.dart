@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:w_phonics/models/app_users.dart';
 import 'package:w_phonics/pages/home_page.dart';
 import 'package:w_phonics/repository/auth_repository.dart';
 import 'package:w_phonics/widgets/custom_textfield.dart';
@@ -17,6 +18,10 @@ class _SignupPageState extends State<SignupPage> {
   var currentPageIndex = 0;
   var emailCOntroller = TextEditingController();
   var passwordController = TextEditingController();
+  AppUsers? newUser;
+  AuthRepository authRepository = AuthRepository();
+  List<String> selectedAge = [];
+  List<String> selectedUserType = [];
 
   @override
   Widget build(BuildContext context) {
@@ -42,7 +47,9 @@ class _SignupPageState extends State<SignupPage> {
                     key: Key("grid1"),
                     heading: "Are you a guardian or a teacher",
                     options: ["Guardian", "Tutor", "Teacher", "Other"],
-                    onSelect: (selectedItems) => print(selectedItems),
+                    onSelect: (selectedItems) {
+                      selectedUserType = selectedItems;
+                    },
                   ),
                 ),
               if (currentPageIndex == 2)
@@ -52,7 +59,7 @@ class _SignupPageState extends State<SignupPage> {
                     heading: "Select your child's age",
                     options: ["0-3", "3-5", "5-8", "8+"],
                     onSelect: (listOfSelection) {
-                      print(listOfSelection);
+                      selectedAge = listOfSelection;
                     },
                   ),
                 ),
@@ -80,6 +87,9 @@ class _SignupPageState extends State<SignupPage> {
                       setState(() {
                         currentPageIndex++;
                       });
+                      authRepository.updateUserProfile(
+                        user: newUser!.copyWith(ageOfLearners: selectedAge, userType: selectedUserType),
+                      );
                     }
                   },
                   child: Text("Next"),
@@ -94,7 +104,7 @@ class _SignupPageState extends State<SignupPage> {
 
   Future<void> _createUserAccount() async {
     try {
-      await AuthRepository().signUp(
+      newUser = await authRepository.signUp(
         email: emailCOntroller.text,
         password: passwordController.text,
       );
