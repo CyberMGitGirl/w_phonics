@@ -14,29 +14,36 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
   void initState() {
     super.initState();
     widget.tabController.addListener(() {
-      setState(() {});
+      if (mounted) setState(() {});                                                                                      //advised, to prevent crashes
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.transparent,
-        image: DecorationImage(
-          image: AssetImage("assets/images/curve_rect.png"),
-          fit: BoxFit.fitWidth,
+    return SafeArea(
+      top: false,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.transparent,
+          image: DecorationImage(
+            image: AssetImage("assets/images/curve_rect.png"),
+            fit: BoxFit.fitWidth,
+            alignment: Alignment.bottomCenter,                                                                                 //to fit into image
+          ),
         ),
-      ),
-      height: 120,
-      child: TabBar(
-        controller: widget.tabController,
-        dividerHeight: 0,
-        indicatorColor: Colors.transparent,
-        tabs: [
-          _buildBottomNavItem(index: 0, activeColor: Colors.amber.shade900, icon: Icons.book ),
-          _buildBottomNavItem(index: 1, activeColor: Colors.green.shade900, icon: Icons.list),
-        ],
+        height: 100,
+        child: TabBar(
+          controller: widget.tabController,
+          dividerHeight: 0,
+          indicatorColor: Colors.transparent,
+          labelPadding: EdgeInsets.zero,                                                                                      //to control the padding around the tab widget
+          tabs: [
+            _buildBottomNavItem(index: 0, activeColor: Colors.redAccent, icon: Icons.menu_book_rounded,),                   //made book color more red or pink, than amber.shade900, also I prefer the look of menu book, over book
+            _buildBottomNavItem(index: 1, activeColor: Colors.lightBlue, icon: Icons.sports_esports_rounded,),
+            _buildBottomNavItem(index: 2, activeColor: Colors.green, icon: Icons.music_note_rounded,),                      //may need to get FontAwesomeIcons package to get more exact icons
+            _buildBottomNavItem(index: 3, activeColor: Colors.purple, icon: Icons.checklist_rounded),                       //preferred ovr list
+          ],
+        ),
       ),
     );
   }
@@ -46,23 +53,40 @@ class _CustomBottomNavigationState extends State<CustomBottomNavigation> {
     required Color activeColor,
     required IconData icon,
   }) {
-    return Container(
-      height: 55,
-      width: 55,
-      padding: EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(16),
-        color: widget.tabController.index == index ? activeColor : Colors.white,
-      ),
-      child: Tab(
-        icon: Icon(
-          icon,
-          size: 45,
-          color: widget.tabController.index == index
-              ? Colors.white
-              : activeColor,
+  final bool isMiddleTab = index == 1 || index ==2;                                                                          //raise the 2 center icons to follow the curve
+  
+
+    return Transform.translate(
+      offset: Offset(0, isMiddleTab ? -15 : 0),                                                                              //how intense
+      child: Container(
+      
+        height: 55,                                                                                                         //i also liked the look of 56
+        width: 55,
+        padding: EdgeInsets.all(5),
+      
+        decoration: ShapeDecoration(                                                                                         //for accuracy, I used ShapeDecoration not BoxDecoration
+          
+          color: widget.tabController.index == index ? activeColor : Colors.white,
+          shape: ContinuousRectangleBorder(
+            borderRadius: BorderRadius.circular(40),
+
+          )
+          
+          
+        ),
+        child: Tab(
+          icon: Icon(
+            icon,
+            size: 45,
+            color: widget.tabController.index == index
+                ? Colors.white
+                : activeColor,
+          ),
         ),
       ),
     );
   }
 }
+
+
+

@@ -10,4 +10,4 @@ abstract class Env {
     @EnviedField(varName: 'SUPABASE_PUB_KEY')
     static String supabasePubKey = _Env.supabasePubKey;
     
-}
+}  

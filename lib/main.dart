@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:w_phonics/env/env.dart';
+import 'package:w_phonics/env/env.dart';                       
 import 'package:w_phonics/pages/onboarding_page.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';        
 
-void main()async {
+void main() async{                                                      
   await Supabase.initialize(
     url: Env.supabaseUrl,
     anonKey: Env.supabasePubKey,

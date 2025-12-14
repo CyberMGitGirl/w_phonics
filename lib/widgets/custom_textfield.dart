@@ -22,6 +22,10 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       keyboardType: textInputType,
 
+      style: const TextStyle(                                                                         //this gives us the desired white text...in the textfield
+        color: Colors.white,
+      ),
+
       decoration: InputDecoration(
         suffixIcon: suffixIcon,
         enabledBorder: OutlineInputBorder(
@@ -32,7 +36,7 @@ class CustomTextField extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: Colors.white),
         ),
-        fillColor: Colors.white,
+        //fillColor: Colors.white,                                                                           //can remove this
         labelText: label,
         labelStyle: TextStyle(color: Colors.white),
         focusColor: Colors.white,
@@ -42,4 +46,4 @@ class CustomTextField extends StatelessWidget {
       
     );
   }
-}
+} 
